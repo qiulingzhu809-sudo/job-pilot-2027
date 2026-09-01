@@ -59,7 +59,7 @@
 环境要求：Node.js 22.13 或更高版本。
 
 ```bash
-git clone https://github.com/<your-name>/job-pilot-2027.git
+git clone https://github.com/qiulingzhu809-sudo/job-pilot-2027.git
 cd job-pilot-2027
 npm install
 npm run dev
