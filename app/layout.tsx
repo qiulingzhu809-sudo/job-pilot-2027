@@ -13,11 +13,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: '秋招雷达 2027｜前端与全栈岗位库',
-  description: '聚合并核验 2027 届前端与全栈校招岗位，管理 Base、行业、公司类型与投递行动。',
+  title: '秋招雷达 2027｜校招岗位工作台',
+  description: '聚合并核验 2027 届校招岗位，管理 Base、行业、公司类型与投递行动。',
   openGraph: {
     title: '秋招雷达 2027',
-    description: '前端与全栈岗位库',
+    description: '通用校招岗位发现与投递工作台',
     images: ['/job-pilot-social.png'],
   },
 };
