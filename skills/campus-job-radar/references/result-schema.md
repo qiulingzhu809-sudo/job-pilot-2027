@@ -1,6 +1,6 @@
 # 结果数据契约
 
-Discover 模式最终把一个 JSON 数组写入 `data/agent-jobs.json`。每一项结构如下：
+Discover 模式最终生成一个 JSON 数组，并以 `{ "jobs": [...] }` 请求体 POST 到本地工作台的 `/api/jobs`。每一项结构如下：
 
 ```json
 {
@@ -32,3 +32,4 @@ Discover 模式最终把一个 JSON 数组写入 `data/agent-jobs.json`。每一
 - `score` 为 0–10 的一位小数。
 - `tags` 最多 6 个；`base` 至少一个元素，未知时写 `未知`。
 - 届别、状态或官方 URL 任一无法确认时，不得写入结果文件，在完成报告中列为待核验候选。
+- 导入后必须 GET `/api/jobs` 检查本轮官方网址能被读回；不要把请求体保存进仓库文件。
