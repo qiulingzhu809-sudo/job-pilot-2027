@@ -6,6 +6,7 @@
     "node": ">=22.13.0"
   },
   "scripts": {
+    "setup:agent": "node scripts/setup-agent.mjs",
     "dev": "vinext dev",
     "build": "vinext build",
     "start": "vinext start",

@@ -6,7 +6,7 @@
 
 把散落在企业招聘官网的岗位整理成可筛选、可核验、可继续行动的投递清单。
 
-[功能介绍](#-核心功能) · [本地运行](#-本地运行) · [路线图](#-路线图)
+[快速开始](#-快速开始) · [完整流程](#-完整流程) · [功能介绍](#-核心功能)
 
 </div>
 
@@ -20,7 +20,35 @@
 
 它不做未经确认的“自动海投”。涉及登录招聘网站、填写个人资料、上传简历和最终提交时，始终由使用者确认。
 
-项目内置一组示例岗位，并支持把 Agent 最新核验的岗位持久化到 D1。岗位状态可能随时变化，请始终以企业招聘官网为准。
+项目内置一组示例岗位。Agent 最新核验的结果会直接写入本地 `data/agent-jobs.json`，打开工作台即可查看。岗位状态可能随时变化，请始终以企业招聘官网为准。
+
+## 🚀 快速开始
+
+环境要求：Node.js 22.13 或更高版本，以及 Codex、Claude Code 等支持 Agent Skills 的编程 Agent。
+
+```bash
+git clone https://github.com/qiulingzhu809-sudo/job-pilot-2027.git
+cd job-pilot-2027
+npm install
+npm run setup:agent
+```
+
+`setup:agent` 会把秋招雷达 Skill 安装到当前项目，并安装 Browser Use 官方 Skill。完成后回到 Agent 对话，直接说：
+
+```text
+运行秋招雷达
+```
+
+不需要先打开网页，也不需要复制提示词或粘贴 JSON。Agent 会继续完成后面的步骤。
+
+## 🔁 完整流程
+
+1. Agent 询问毕业届别、重点岗位方向、期望 Base、行业偏好和排除项。
+2. Agent 使用 Browser Use 先建立公司池，再逐家公司核验招聘官网。
+3. 通过核验的岗位自动写入 `data/agent-jobs.json`，按官方网址去重。
+4. Agent 自动运行开发服务器并打开本地工作台；若当前环境不能代为打开，会明确给出完整地址。
+5. 用户在工作台筛选岗位、查看评分并打开官方岗位页。
+6. 决定申请后，在 Agent 对话里说“帮我投递当前选择的岗位”。Agent 会读取官网表单，先展示字段映射，再逐级确认填写、上传和最终提交。
 
 ## ✨ 核心功能
 
@@ -38,26 +66,7 @@
 
 ### 🤖 Browser Use 协作入口
 
-仓库附带 [`campus-job-radar`](skills/campus-job-radar/SKILL.md) Skill，供 Codex、Claude Code 等 Agent 调用 Browser Use 完成“建立公司池 → 检查招聘官网 → 核验岗位 → 去重评分 → 导入平台”。平台会校验并预览 Agent 返回的 JSON，确认后再写入岗位库。
-
-```text
-$campus-job-radar 搜索 2027 届校招岗位，优先前端与全栈，但不要限制岗位方向；只返回仍可投递的官网岗位。
-```
-
-满意某个岗位后，可以让 Agent 进入单岗位协助投递模式：
-
-```text
-$campus-job-radar apply <官方岗位网址>
-```
-
-Agent 会先展示字段映射；填写个人资料、上传简历和最终提交分别需要确认，验证码、MFA 和 CAPTCHA 由使用者亲自处理。Skill 不要求把简历或招聘网站凭据保存到本项目。
-
-### 安装 Skill
-
-将 `skills/campus-job-radar` 复制到对应 Agent 的 Skill 目录：
-
-- Codex：`$CODEX_HOME/skills/campus-job-radar`
-- Claude Code：项目级 `.claude/skills/campus-job-radar` 或用户级 `~/.claude/skills/campus-job-radar`
+仓库附带 [`campus-job-radar`](skills/campus-job-radar/SKILL.md)、`AGENTS.md` 和 `CLAUDE.md`。Agent 进入仓库后能够发现完整流程，并调用由安装脚本加入的 [Browser Use 官方 Skill](https://www.skills.sh/browser-use/browser-use/browser-use)。用户只需表达目标，Agent 负责询问、检索、写回和打开工作台。
 
 ### 💾 可扩展的数据层
 
@@ -73,7 +82,7 @@ Agent 会先展示字段映射；填写个人资料、上传简历和最终提�
 - Tailwind CSS 4
 - ChatGPT Sites 身份认证与托管
 
-## 🚀 本地运行
+## 🧰 只运行网页
 
 环境要求：Node.js 22.13 或更高版本。
 
@@ -119,6 +128,9 @@ db/
 drizzle/                    # SQL 迁移
 public/                     # 图标与社交分享图
 skills/campus-job-radar/    # Codex / Claude Code 可复用 Skill
+data/agent-jobs.json        # Agent 自动写回的本地岗位结果
+scripts/setup-agent.mjs     # 安装项目 Skill 与 Browser Use Skill
+AGENTS.md / CLAUDE.md       # Agent 自动发现的仓库入口
 ```
 
 ## 🗺 路线图

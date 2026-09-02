@@ -36,3 +36,7 @@ next-env.d.ts
 /.wrangler/
 /outputs/
 /work/
+
+# agent skills installed by setup:agent
+/.agents/skills/
+/.claude/skills/
