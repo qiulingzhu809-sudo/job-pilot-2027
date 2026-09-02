@@ -10,7 +10,7 @@ description: 初始化和运行秋招雷达，询问求职偏好后用 Browser U
 ## 首次启动
 
 1. 在仓库根目录运行 `npm run setup:agent`。安装失败时说明具体依赖或网络问题，修复后重试。
-2. 确认 `browser-use` Skill 已可读取，再开始搜索。Browser Use 的安装和连接问题按它自己的说明处理。
+2. 确认 `browser-use` Skill 已可读取且 `browser-harness` CLI 可执行，再开始搜索。命令不在 PATH 时通过 `uv tool run browser-harness` 调用；安装和连接问题按 Browser Use 官方说明处理。
 3. 依次询问用户：毕业届别、重点岗位方向、期望 Base、行业偏好、明确排除项。用户可以回答“都可以”；没有答案时采用宽覆盖策略并记录为中性偏好。
 4. 完成 Discover 流程，将最终 JSON 数组直接写入仓库根目录的 `data/agent-jobs.json`。保留已有且仍有效的岗位，以 `officialUrl` 去重并用最新核验结果更新。
 5. 运行 `npm run dev`，从终端输出识别实际端口，并使用宿主可用的打开网页能力打开本地地址；若不能代为打开，就把完整地址明确告诉用户。

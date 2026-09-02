@@ -33,7 +33,7 @@ npm install
 npm run setup:agent
 ```
 
-`setup:agent` 会把秋招雷达 Skill 安装到当前项目，并安装 Browser Use 官方 Skill。完成后回到 Agent 对话，直接说：
+`setup:agent` 会把秋招雷达 Skill 安装到当前项目，并安装 Browser Use 官方 Skill 与实际控制 Chrome 所需的 Browser Harness CLI。完成后回到 Agent 对话，直接说：
 
 ```text
 运行秋招雷达
