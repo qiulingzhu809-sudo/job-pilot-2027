@@ -20,7 +20,7 @@
 
 它不做未经确认的“自动海投”。涉及登录招聘网站、填写个人资料、上传简历和最终提交时，始终由使用者确认。
 
-项目当前内置 8 个已经过招聘官网核验的岗位，来自阿里巴巴、腾讯、字节跳动和网易有道。岗位状态可能随时变化，请始终以企业招聘官网为准。
+项目内置一组示例岗位，并支持把 Agent 最新核验的岗位持久化到 D1。岗位状态可能随时变化，请始终以企业招聘官网为准。
 
 ## ✨ 核心功能
 
@@ -38,11 +38,30 @@
 
 ### 🤖 Browser Use 协作入口
 
-“同步更多岗位”会生成一段结构化搜索任务，可交给 Browser Use 或其他浏览器智能体继续搜索、去重和核验。
+仓库附带 [`campus-job-radar`](skills/campus-job-radar/SKILL.md) Skill，供 Codex、Claude Code 等 Agent 调用 Browser Use 完成“建立公司池 → 检查招聘官网 → 核验岗位 → 去重评分 → 导入平台”。平台会校验并预览 Agent 返回的 JSON，确认后再写入岗位库。
+
+```text
+$campus-job-radar 搜索 2027 届校招岗位，优先前端与全栈，但不要限制岗位方向；只返回仍可投递的官网岗位。
+```
+
+满意某个岗位后，可以让 Agent 进入单岗位协助投递模式：
+
+```text
+$campus-job-radar apply <官方岗位网址>
+```
+
+Agent 会先展示字段映射；填写个人资料、上传简历和最终提交分别需要确认，验证码、MFA 和 CAPTCHA 由使用者亲自处理。Skill 不要求把简历或招聘网站凭据保存到本项目。
+
+### 安装 Skill
+
+将 `skills/campus-job-radar` 复制到对应 Agent 的 Skill 目录：
+
+- Codex：`$CODEX_HOME/skills/campus-job-radar`
+- Claude Code：项目级 `.claude/skills/campus-job-radar` 或用户级 `~/.claude/skills/campus-job-radar`
 
 ### 💾 可扩展的数据层
 
-项目已经接入 Cloudflare D1，并提供投递进度数据表与 API 基础结构，为后续的岗位收藏、投递状态和搜索请求持久化做准备。
+项目已经接入 Cloudflare D1，提供 Agent 岗位导入、去重更新和投递进度 API。
 
 ## 🧱 技术栈
 
@@ -88,6 +107,7 @@ npm run build
 
 ```text
 app/
+├── api/jobs/route.ts       # Agent 岗位导入与查询 API
 ├── api/progress/route.ts   # 投递进度 API
 ├── chatgpt-auth.ts         # ChatGPT 登录辅助函数
 ├── globals.css             # 全局视觉样式
@@ -98,14 +118,15 @@ db/
 └── schema.ts               # 投递进度与搜索请求模型
 drizzle/                    # SQL 迁移
 public/                     # 图标与社交分享图
+skills/campus-job-radar/    # Codex / Claude Code 可复用 Skill
 ```
 
 ## 🗺 路线图
 
-- [ ] 将内置岗位迁移到可编辑的 D1 岗位库
-- [ ] 在页面中保存关注、准备材料、已投递、面试中等状态
+- [x] 支持 Agent 核验结果导入 D1 岗位库
+- [x] 在页面中保存关注、准备材料、已投递、面试中等状态
 - [ ] 支持简历版本和常见网申答案管理
-- [ ] 接入 Browser Use 任务队列，自动发现并核验新增岗位
+- [x] 提供 Browser Use 发现、核验、导入与协助投递 Skill
 - [ ] 增加岗位去重、失效链接检测和核验时间
 - [ ] 支持 CSV / Excel 导入导出
 - [ ] 增加职位匹配分析与针对性简历建议

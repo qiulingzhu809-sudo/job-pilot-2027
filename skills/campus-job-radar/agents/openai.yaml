@@ -1,0 +1,8 @@
+interface:
+  display_name: "秋招雷达"
+  short_description: "发现并核验校招岗位，导入平台并安全协助完成网申填写"
+  brand_color: "#CAFF3B"
+  default_prompt: "使用 $campus-job-radar 搜索并核验适合我的校招岗位。"
+
+policy:
+  allow_implicit_invocation: true
