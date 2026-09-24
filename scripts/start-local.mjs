@@ -5,6 +5,8 @@ const processes = [
   spawn('npm', ['run', 'dev'], { stdio: 'inherit', shell }),
   spawn('npm', ['run', 'browser:harness'], { stdio: 'inherit', shell }),
 ];
+const feed = spawn(process.execPath, ['scripts/pull-private-feed.mjs', '--watch'], { stdio: 'inherit' });
+processes.push(feed);
 
 let stopping = false;
 function stop(code = 0) {

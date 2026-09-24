@@ -72,7 +72,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   const userId = await currentUserId();
-  const body = await request.json() as { jobs?: AgentJob[] };
+  const body = await request.json() as { jobs?: AgentJob[]; appendOnly?: boolean };
   if (!Array.isArray(body.jobs) || body.jobs.length === 0 || body.jobs.length > 25) {
     return NextResponse.json({ error: '每次需要导入 1–25 个岗位' }, { status: 400 });
   }
@@ -86,14 +86,14 @@ export async function POST(request: NextRequest) {
       batch, graduation_year, official_url, apply_status, remote_interview,
       verified_at, duplicate_check, score_tenths, score_reason, notes, created_at, updated_at
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ON CONFLICT(user_id, company, role, official_url) DO UPDATE SET
+    ON CONFLICT(user_id, company, role, official_url) DO ${body.appendOnly === true ? 'NOTHING' : `UPDATE SET
       company = excluded.company, role = excluded.role, company_type = excluded.company_type,
       industry = excluded.industry, base_json = excluded.base_json, track = excluded.track,
       tags_json = excluded.tags_json, batch = excluded.batch,
       graduation_year = excluded.graduation_year, apply_status = excluded.apply_status,
       remote_interview = excluded.remote_interview, verified_at = excluded.verified_at,
       duplicate_check = excluded.duplicate_check, score_tenths = excluded.score_tenths,
-      score_reason = excluded.score_reason, notes = excluded.notes, updated_at = excluded.updated_at
+      score_reason = excluded.score_reason, notes = excluded.notes, updated_at = excluded.updated_at`}
   `).bind(
     userId, job.company, job.role, job.companyType, job.industry, JSON.stringify(job.base),
     job.track, JSON.stringify(job.tags.slice(0, 6)), job.batch, job.graduationYear,

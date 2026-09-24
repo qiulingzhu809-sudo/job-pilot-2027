@@ -60,6 +60,10 @@ npm run dev:all
 
 ### 从私有岗位源同步
 
+私有 GitHub 采集源可在本机 `gh auth login` 后配置 `JOB_FEED_REPO=owner/private-repo`，或在忽略提交的 `.runtime/feed-source.json` 写入 `{"repository":"owner/private-repo"}`。数据源需提供 `feed-data` 分支的 `jobs.json`。
+
+运行 `npm run feed:pull` 拉取并导入；`npm run dev:all` 配置该来源后会每 30 分钟自动同步。该流程只追加公司、岗位名、URL 三元组中尚未存在的记录，不覆盖旧字段或投递进度。日志保存在 `.runtime/feed/sync-runs.jsonl`。网页每分钟刷新岗位列表；历史核验日期保留，不表示今天仍可投。云端采集可独立于本机运行，本机同步则需要工作台在线。
+
 采集器应放在独立的私有仓库，工作台只消费标准 JSON。启动工作台后，可读取本地文件：
 
 ```bash

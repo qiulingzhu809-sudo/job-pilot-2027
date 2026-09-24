@@ -22,8 +22,20 @@ async function readFeed(location) {
 }
 
 const payload = await readFeed(feedUrl);
-const jobs = Array.isArray(payload) ? payload : payload.jobs;
+let jobs = Array.isArray(payload) ? payload : payload.jobs;
 if (!Array.isArray(jobs)) throw new Error('岗位源格式错误：需要 JSON 数组或包含 jobs 数组的对象。');
+const appendOnly = process.env.JOB_FEED_APPEND_ONLY === '1';
+if (appendOnly) {
+  const response = await fetch(`${radarUrl}/api/jobs`);
+  if (!response.ok) throw new Error(`读取现有岗位失败：HTTP ${response.status}`);
+  const key = job => JSON.stringify([job.company, job.role, job.officialUrl]);
+  const existing = new Set((await response.json()).map(key));
+  jobs = jobs.filter(job => {
+    const id = key(job);
+    if (existing.has(id)) return false;
+    existing.add(id); return true;
+  });
+}
 
 let imported = 0;
 for (let offset = 0; offset < jobs.length; offset += 25) {
@@ -31,7 +43,7 @@ for (let offset = 0; offset < jobs.length; offset += 25) {
   const response = await fetch(`${radarUrl}/api/jobs`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ jobs: batch }),
+    body: JSON.stringify({ jobs: batch, appendOnly }),
   });
   if (!response.ok) {
     const detail = await response.text();

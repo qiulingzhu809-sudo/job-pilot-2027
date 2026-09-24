@@ -13,6 +13,7 @@
     "build": "vinext build",
     "start": "vinext start",
     "feed:sync": "node scripts/sync-job-feed.mjs",
+    "feed:pull": "node scripts/pull-private-feed.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern browser-worker/.venv",
     "db:generate": "drizzle-kit generate"
   },

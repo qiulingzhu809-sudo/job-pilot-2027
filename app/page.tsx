@@ -78,7 +78,13 @@ export default function Home() {
       })
       .catch(() => setLoadError(true))
       .finally(() => setLoading(false));
-    return () => window.clearTimeout(profileTimer);
+    const jobsTimer = window.setInterval(() => {
+      fetch('/api/jobs')
+        .then(response => { if (!response.ok) throw new Error('jobs'); return response.json() as Promise<Job[]>; })
+        .then(setJobs)
+        .catch(() => { /* Keep the last successful list during a temporary outage. */ });
+    }, 60000);
+    return () => { window.clearTimeout(profileTimer); window.clearInterval(jobsTimer); };
   }, []);
 
   useEffect(() => {
