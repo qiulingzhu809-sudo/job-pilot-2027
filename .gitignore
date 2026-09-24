@@ -1,5 +1,11 @@
 # dependencies
 /node_modules
+/.venv/
+/browser-worker/.venv/
+/browser-worker/.runtime/
+__pycache__/
+*.pyc
+/.runtime/
 /.pnp
 .pnp.*
 .yarn/*

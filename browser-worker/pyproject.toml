@@ -1,0 +1,18 @@
+[project]
+name = "job-pilot-browser"
+version = "0.1.0"
+description = "Local deterministic browser harness for Job Pilot"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.116,<1",
+  "playwright>=1.55,<2",
+  "python-multipart>=0.0.20,<1",
+  "uvicorn[standard]>=0.35,<1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/job_pilot_browser"]

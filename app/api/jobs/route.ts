@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
       batch, graduation_year, official_url, apply_status, remote_interview,
       verified_at, duplicate_check, score_tenths, score_reason, notes, created_at, updated_at
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ON CONFLICT(user_id, official_url) DO UPDATE SET
+    ON CONFLICT(user_id, company, role, official_url) DO UPDATE SET
       company = excluded.company, role = excluded.role, company_type = excluded.company_type,
       industry = excluded.industry, base_json = excluded.base_json, track = excluded.track,
       tags_json = excluded.tags_json, batch = excluded.batch,

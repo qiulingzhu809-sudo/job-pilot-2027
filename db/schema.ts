@@ -39,4 +39,6 @@ export const jobs = sqliteTable('jobs', {
   notes: text('notes').notNull().default(''),
   createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
   updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
-}, (table) => [uniqueIndex('jobs_user_official_url_idx').on(table.userId, table.officialUrl)]);
+}, (table) => [uniqueIndex('jobs_user_company_role_url_idx').on(
+  table.userId, table.company, table.role, table.officialUrl,
+)]);

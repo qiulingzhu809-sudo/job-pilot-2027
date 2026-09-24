@@ -6,11 +6,14 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "setup:agent": "node scripts/setup-agent.mjs",
+    "setup": "node scripts/setup-local.mjs",
+    "browser:harness": "UV_CACHE_DIR=browser-worker/.runtime/uv-cache uv run --project browser-worker uvicorn job_pilot_browser.main:app --host 127.0.0.1 --port 8765",
+    "dev:all": "node scripts/start-local.mjs",
     "dev": "vinext dev",
     "build": "vinext build",
     "start": "vinext start",
-    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+    "feed:sync": "node scripts/sync-job-feed.mjs",
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern browser-worker/.venv",
     "db:generate": "drizzle-kit generate"
   },
   "dependencies": {

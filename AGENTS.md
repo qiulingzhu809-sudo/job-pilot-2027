@@ -1,7 +1,5 @@
-# 秋招雷达 Agent 入口
+# 秋招雷达仓库入口
 
-当用户要求初始化、运行、更新岗位或开始秋招雷达时，读取并使用 `skills/campus-job-radar/SKILL.md`。
+当用户维护岗位数据、Browser Harness、网申资料或要求接管未知招聘网站时，读取 `skills/campus-job-radar/SKILL.md`。
 
-首次运行先执行 `npm run setup:agent`，确认 Browser Use Skill 与 Browser Harness CLI 可用；CLI 不在 PATH 时使用 `uv tool run browser-harness`。再由 Skill 询问届别、岗位方向、Base、行业偏好和排除项。运行 `npm run dev` 后，把官网核验结果 POST 到本地 `/api/jobs`，确认页面能读取，再明确告诉用户本地网页地址。岗位与投递记录不得写入源码或 Git 文件；不要要求用户复制提示词或手工搬运 JSON。
-
-用户选择岗位并要求投递时，由 Skill 使用 Browser Use 读取官方申请页；填写个人信息、上传文件和最终提交分别确认。
+Browser Harness 负责已支持招聘系统的一键确定性填写；未知网站由 Codex、Claude Code 等外部 Agent 读取本地交接后接管。两条路径都停在附件和最终提交前。岗位、投递记录和个人资料不写入页面源码或 Git。

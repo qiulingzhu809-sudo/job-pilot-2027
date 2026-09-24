@@ -1,8 +1,8 @@
 interface:
   display_name: "秋招雷达"
-  short_description: "询问求职偏好，自动搜索岗位、写回工作台并协助网申"
+  short_description: "维护工作台、Browser Harness 与安全网申"
   brand_color: "#CAFF3B"
-  default_prompt: "使用 $campus-job-radar 运行秋招雷达。"
+  default_prompt: "使用 $campus-job-radar 运行或维护秋招雷达；Harness 不支持当前网站时读取本地交接并接管浏览器。"
 
 policy:
   allow_implicit_invocation: true
